@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f5fc">
+    <meta name="description" content="Расписание уроков лицея №6">
+
+    <title>Расписание - Лицей №6</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- БОКОВАЯ ПАНЕЛЬ -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">🏫</div>
+
+            <div class="logo-text">
+            <h2>Лицей №6 «Перспектива»</h2>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-label">МЕНЮ</p>
+
+            <nav class="nav" aria-label="Основная навигация">
+                <a href="#schedule" class="nav-item active" data-view="schedule">
+                    <span class="nav-icon">📅</span>
+                    <span>Расписание</span>
+                </a>
+
+                <a href="#teachers" class="nav-item" data-view="teachers">
+                    <span class="nav-icon">🧑‍🏫</span>
+                    <span>Учителя</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- ИЗБРАННОЕ НА ПК -->
+        <div class="sidebar-section favorites-section">
+            <p class="favorites-title">★ Избранные классы</p>
+
+            <div id="favorites-list">
+                <p class="favorites-empty">
+                    Пока нет избранных классов
+                </p>
+            </div>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-footer">
+                <span class="status-dot"></span>
+                <span>Расписание лицея №6</span>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="main-content">
+
+        <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+        <header class="header">
+
+            <div class="header-title">
+                <h1>Расписание</h1>
+                <p>Всё необходимое для учебной недели</p>
+            </div>
+
+            <div class="header-right">
+
+                <div class="connection-info">
+                    <span id="connection" class="connection-status">
+                        Подключение...
+                    </span>
+
+                    <p id="updated-at">
+                        Проверяем обновления
+                    </p>
+                </div>
+
+                <button
+                    id="theme-toggle"
+                    class="theme-toggle header-theme-toggle"
+                    type="button"
+                    title="Переключить тему"
+                    aria-label="Переключить тему"
+                >☾</button>
+
+                <button
+                    id="reload-button"
+                    class="reload-button"
+                    type="button"
+                    title="Обновить расписание"
+                    aria-label="Обновить расписание"
+                >↻</button>
+
+            </div>
+
+        </header>
+
+
+        <!-- СТРАНИЦА РАСПИСАНИЯ -->
+        <div class="dashboard">
+
+            <section class="schedule-section">
+
+                <!-- ВЫБОР КЛАССА -->
+                <div class="schedule-controls">
+
+                    <div class="class-select-container">
+
+                        <label class="class-select-wrap" for="class-select">
+                            <span>Выберите класс</span>
+
+                            <select id="class-select">
+                                <option value="">Загрузка классов...</option>
+                            </select>
+                        </label>
+
+                        <button
+                            id="class-favorite-toggle"
+                            class="favorite-toggle"
+                            type="button"
+                            aria-label="Добавить класс в избранное"
+                            title="Добавить класс в избранное"
+                        >☆</button>
+
+                    </div>
+
+                    <!-- ПОИСК ПО РАСПИСАНИЮ -->
+                    <div class="schedule-search">
+                        <input
+                            type="search"
+                            id="search-input"
+                            placeholder="Найти предмет или учителя..."
+                            autocomplete="off"
+                            aria-label="Поиск по расписанию"
+                        >
+                    </div>
+
+                </div>
+
+
+                <!-- ДНИ НЕДЕЛИ -->
+                <div class="schedule-day-section">
+
+                    <div class="section-heading">
+                        <h2>Учебная неделя</h2>
+                        <p>Выберите день, чтобы посмотреть уроки</p>
+                    </div>
+
+                    <nav id="day-tabs" class="days-navigation" aria-label="Дни недели">
+
+                        <button class="day-button active" data-day="Пн" type="button">
+                            <span>Пн</span>
+                        </button>
+
+                        <button class="day-button" data-day="Вт" type="button">
+                            <span>Вт</span>
+                        </button>
+
+                        <button class="day-button" data-day="Ср" type="button">
+                            <span>Ср</span>
+                        </button>
+
+                        <button class="day-button" data-day="Чт" type="button">
+                            <span>Чт</span>
+                        </button>
+
+                        <button class="day-button" data-day="Пт" type="button">
+                            <span>Пт</span>
+                        </button>
+
+                        <button class="day-button" data-day="Сб" type="button">
+                            <span>Сб</span>
+                        </button>
+
+                    </nav>
+
+                </div>
+
+
+                <!-- ЗАГОЛОВОК РАСПИСАНИЯ -->
+                <div class="schedule-heading">
+
+                    <div>
+                        <h2 id="schedule-title">Понедельник</h2>
+
+                        <p id="schedule-caption">
+                            Расписание выбранного класса
+                        </p>
+                    </div>
+
+                    <span id="lesson-count" class="lesson-count">
+                        0 уроков
+                    </span>
+
+                </div>
+
+
+                <!-- УВЕДОМЛЕНИЯ ОБ ОШИБКАХ -->
+                <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+
+                <!-- КАРТОЧКИ УРОКОВ -->
+                <div id="schedule-list" class="schedule-list">
+
+                    <div class="loading-state">
+                        Загрузка расписания...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- СТРАНИЦА ИЗБРАННЫХ КЛАССОВ -->
+        <section id="favorites-view" class="teachers-view favorites-view" hidden>
+
+            <div class="teachers-heading">
+                <h2>Избранные классы</h2>
+                <p>Твои сохранённые классы</p>
+            </div>
+
+            <div id="favorites-mobile-list" class="favorites-mobile-list">
+
+                <div class="empty-state">
+                    Пока нет избранных классов.
+                    Добавь класс с помощью звёздочки в расписании.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- СТРАНИЦА УЧИТЕЛЕЙ -->
+        <section id="teachers-view" class="teachers-view" hidden>
+
+            <div class="teachers-heading">
+                <h2>Расписание по учителям</h2>
+
+                <p>
+                    Найди все уроки учителя за выбранный день
+                </p>
+            </div>
+
+
+            <div class="teacher-search-wrap">
+
+                <input
+                    id="teacher-search-input"
+                    type="search"
+                    list="teacher-list"
+                    placeholder="Введите фамилию или имя учителя..."
+                    autocomplete="off"
+                    aria-label="Поиск учителя"
+                >
+
+                <datalist id="teacher-list"></datalist>
+
+            </div>
+
+
+            <nav
+                id="teacher-day-tabs"
+                class="days-navigation"
+                aria-label="Дни недели"
+            >
+
+                <button class="day-button active" data-day="Пн" type="button">
+                    <span>Пн</span>
+                </button>
+
+                <button class="day-button" data-day="Вт" type="button">
+                    <span>Вт</span>
+                </button>
+
+                <button class="day-button" data-day="Ср" type="button">
+                    <span>Ср</span>
+                </button>
+
+                <button class="day-button" data-day="Чт" type="button">
+                    <span>Чт</span>
+                </button>
+
+                <button class="day-button" data-day="Пт" type="button">
+                    <span>Пт</span>
+                </button>
+
+                <button class="day-button" data-day="Сб" type="button">
+                    <span>Сб</span>
+                </button>
+
+            </nav>
+
+
+            <div class="teacher-results-heading">
+
+                <div>
+                    <h3 id="teacher-results-title">
+                        Выберите учителя
+                    </h3>
+
+                    <p id="teacher-results-caption">
+                        Результаты появятся здесь
+                    </p>
+                </div>
+
+                <span
+                    id="teacher-lesson-count"
+                    class="lesson-count"
+                ></span>
+
+            </div>
+
+
+            <div id="teacher-results" class="teacher-results">
+
+                <div class="empty-state">
+                    Начните вводить имя учителя.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- МОБИЛЬНАЯ НАВИГАЦИЯ -->
+        <nav class="mobile-nav" aria-label="Мобильная навигация">
+
+            <a href="#favorites" data-view="favorites">
+                <span class="icon">★</span>
+                Избранное
+            </a>
+
+            <a href="#schedule" data-view="schedule" class="active">
+                <span class="icon">📅</span>
+                Расписание
+            </a>
+
+            <a href="#teachers" data-view="teachers">
+                <span class="icon">🧑‍🏫</span>
+                Учителя
+            </a>
+
+        </nav>
+
+    </main>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
