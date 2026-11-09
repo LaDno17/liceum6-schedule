@@ -6,38 +6,24 @@
 
 :root {
     color-scheme: light;
-
     --bg: #f5f5fc;
     --surface: #ffffff;
     --surface-soft: #f0efff;
     --surface-hover: #f6f5ff;
-
     --primary: #6256d9;
     --primary-hover: #5145c7;
     --primary-light: #e7e3ff;
-
     --text: #17182e;
     --text-secondary: #777993;
     --text-muted: #a0a1b5;
-
     --border: #e9e8f2;
     --border-strong: #dedceb;
-
     --success: #28a879;
-    --success-bg: #e8f8f1;
-
     --danger: #df626d;
-    --danger-bg: #fff0f1;
-
     --sidebar-width: 250px;
-    --header-height: 78px;
-
     --radius-md: 14px;
-    --radius-lg: 20px;
-
     --shadow-sm: 0 2px 8px rgba(35, 31, 90, 0.04);
     --shadow-md: 0 8px 28px rgba(35, 31, 90, 0.07);
-
     --transition: 0.2s ease;
 }
 
@@ -45,23 +31,20 @@
 
 html[data-theme="dark"] {
     color-scheme: dark;
-
     --bg: #171821;
     --surface: #20212d;
     --surface-soft: #29283b;
     --surface-hover: #2b2c3b;
-
     --primary: #9388ff;
     --primary-hover: #a69dff;
     --primary-light: #35314f;
-
     --text: #f0effa;
     --text-secondary: #aaaabd;
     --text-muted: #77788f;
-
     --border: #30313f;
     --border-strong: #414254;
-
+    --success: #48c99a;
+    --danger: #f08089;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
     --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.18);
 }
@@ -90,6 +73,9 @@ button { color: inherit; border: none; background: none; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
 [hidden] { display: none !important; }
 
+/* Скрываем мобильное меню на ПК */
+.mobile-nav { display: none; }
+
 /* ---------- 4. APP LAYOUT ---------- */
 
 .app {
@@ -98,7 +84,7 @@ a { color: inherit; text-decoration: none; }
     width: 100%;
 }
 
-/* ---------- 5. SIDEBAR ---------- */
+/* ---------- 5. SIDEBAR (Боковая панель) ---------- */
 
 .sidebar {
     position: fixed;
@@ -113,9 +99,21 @@ a { color: inherit; text-decoration: none; }
     z-index: 20;
 }
 
+/* Квадрат с логотипом */
 .logo { display: flex; align-items: center; gap: 12px; padding: 0 10px; margin-bottom: 42px; }
-.logo-icon { width: 44px; height: 44px; border-radius: 14px; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 21px; }
-.logo-text h2 { font-size: 17px; font-weight: 750; }
+.logo-icon { 
+    width: 44px; 
+    height: 44px; 
+    flex-shrink: 0; /* Запрещаем сжиматься */
+    border-radius: 14px; 
+    background: var(--primary); 
+    color: #fff; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 21px; 
+}
+.logo-text h2 { font-size: 17px; font-weight: 750; line-height: 1.3; }
 
 .nav { display: flex; flex-direction: column; gap: 7px; }
 .nav-item { display: flex; align-items: center; gap: 13px; min-height: 49px; padding: 0 14px; border-radius: var(--radius-md); color: var(--text-secondary); font-size: 14px; font-weight: 550; }
@@ -302,20 +300,108 @@ html[data-theme="dark"] .main-content > .header {
 .lesson-time { padding: 5px 9px; border-radius: 8px; background: var(--primary-light); color: var(--primary); font-size: 12px; font-weight: 700; }
 .lesson-room strong { padding: 5px 9px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); color: var(--text); font-size: 12px; font-weight: 700; }
 
-/* ---------- 13. OTHER PAGES ---------- */
+/* ---------- 13. TEACHERS & FAVORITES ---------- */
 
 .teachers-view { max-width: 1150px; padding: 38px; margin: 0 auto; width: 100%; }
 .teachers-heading h2 { font-size: 25px; font-weight: 800; }
 .teacher-search-wrap { position: relative; max-width: 500px; margin-bottom: 27px; }
 
+/* Карточки учителей */
+.teacher-results { display: flex; flex-direction: column; gap: 11px; }
+.teacher-results-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.teacher-results-heading h3 { font-size: 16px; font-weight: 750; }
+.teacher-results-heading p { color: var(--text-secondary); font-size: 12px; }
+
+.teacher-lesson-card {
+    display: grid;
+    grid-template-columns: 43px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.teacher-lesson-number {
+    width: 40px; height: 40px; border-radius: 11px;
+    background: var(--surface-soft); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 750;
+}
+
+/* Внутренний блок с текстом */
+.teacher-lesson-main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.teacher-lesson-class { 
+    color: var(--primary); 
+    font-size: 12px; 
+    font-weight: 700; 
+}
+
+.teacher-lesson-subject { 
+    color: var(--text); 
+    font-size: 14px; 
+    font-weight: 650; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+/* Плашка со временем внутри карточки учителя */
+.teacher-lesson-main .lesson-time {
+    width: fit-content; /* Заставляет плашку сжаться по размеру текста */
+    padding: 4px 8px;
+    margin-top: 4px;
+    border-radius: 6px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Кабинет */
+.teacher-lesson-room { 
+    padding: 5px 9px; 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    background: var(--surface-soft); 
+    color: var(--text); 
+    font-size: 12px; 
+    font-weight: 650; 
+    white-space: nowrap; 
+}
+
+.teacher-week-summary { 
+    display: inline-block; 
+    padding: 9px 13px; 
+    margin-top: 13px; 
+    border-radius: 10px; 
+    background: var(--surface-soft); 
+    color: var(--primary); 
+    font-size: 12px; 
+    font-weight: 650; 
+}
 /* ---------- 14. ZAMENY ---------- */
 
-.lesson-card.is-exchange, .lesson-card.is-canceled { border-left: 4px solid #e53935; background: rgba(229, 57, 53, 0.04); }
+.lesson-card.is-exchange, .lesson-card.is-canceled, .teacher-lesson-card.is-exchange, .teacher-lesson-card.is-canceled { border-left: 4px solid #e53935; background: rgba(229, 57, 53, 0.04); }
 .canceled-line { text-decoration: line-through; text-decoration-color: #e53935; text-decoration-thickness: 2px; }
 .room-sep { text-decoration: none !important; color: var(--text-muted); }
 
+html[data-theme="dark"] .lesson-card.is-exchange, 
+html[data-theme="dark"] .teacher-lesson-card.is-exchange, 
+html[data-theme="dark"] .lesson-card.is-canceled, 
+html[data-theme="dark"] .teacher-lesson-card.is-canceled { border-left-color: #ff5c57; background: rgba(255, 92, 87, 0.07); }
+html[data-theme="dark"] .canceled-line { text-decoration-color: #ff5c57; }
+
 /* =========================================
-   МОБИЛЬНАЯ ВЕРСИЯ (ГЛАВНЫЕ ИСПРАВЛЕНИЯ)
+   МОБИЛЬНАЯ ВЕРСИЯ
    ========================================= */
 
 @media (max-width: 700px) {
@@ -336,7 +422,7 @@ html[data-theme="dark"] .main-content > .header {
 
     .dashboard { padding: 0 17px 38px; }
 
-    /* ИСПРАВЛЕНИЕ: Элементы управления теперь идут в колонку */
+    /* Элементы управления в колонку */
     .schedule-controls {
         display: flex;
         flex-direction: column;
@@ -345,28 +431,41 @@ html[data-theme="dark"] .main-content > .header {
         margin-bottom: 24px;
     }
 
+    /* Контейнер с классом и кнопкой */
     .class-select-container {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
         width: 100%;
-        justify-content: space-between;
         min-width: 0;
     }
 
+    .class-select-container label span {
+        display: none;
+    }
+
     .class-select-wrap {
-        flex: 1;
+        width: 100%;
         min-width: 0;
     }
 
     #class-select {
         width: 100%;
+        height: 46px;
+        padding: 0 10px;
     }
 
     .favorite-toggle {
-        flex-shrink: 0;
-        width: 44px; /* Квадратная кнопка со звездочкой */
+        width: 100%;
+        height: 46px;
         padding: 0;
-        font-size: 0; /* Скрываем текст "В избранном" на узких экранах */
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
     }
+
     .favorite-toggle::before {
         content: "★";
         font-size: 18px;
@@ -378,11 +477,15 @@ html[data-theme="dark"] .main-content > .header {
         flex: none;
     }
 
-    /* Дни недели - скролл */
+    .schedule-search input {
+        height: 46px;
+    }
+
+    /* Дни недели */
     .days-navigation { gap: 5px; margin-bottom: 24px; }
     .day-button { min-width: 42px; height: 37px; font-size: 12px; }
 
-    /* Карточки */
+    /* Карточки расписания */
     .lesson-card {
         grid-template-columns: 39px minmax(0, 1fr) auto;
         gap: 10px;
@@ -397,12 +500,26 @@ html[data-theme="dark"] .main-content > .header {
     .lesson-room { gap: 6px; font-size: 11px; }
     .lesson-time, .lesson-room strong { padding: 4px 7px; font-size: 11px; }
 
+    /* Карточки учителей на мобилках */
+    .teachers-view { padding: 27px 17px 38px; }
+    .teacher-lesson-card {
+        grid-template-columns: 38px minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 13px;
+    }
+    .teacher-lesson-number { width: 35px; height: 35px; }
+
     /* Нижнее меню */
     .mobile-nav {
-        position: fixed; z-index: 50; right: 0; bottom: 0; left: 0;
-        display: grid; grid-template-columns: repeat(3, 1fr);
-        min-height: 70px; padding: 7px 12px;
-        background: var(--surface); border-top: 1px solid var(--border);
+        position: fixed;
+        z-index: 50;
+        right: 0; bottom: 0; left: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        min-height: 70px;
+        padding: 7px 12px;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
     }
 
     .mobile-nav a {
